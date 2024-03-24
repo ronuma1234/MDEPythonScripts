@@ -44,9 +44,11 @@ timeframe_dict ={
     "W1":(mt5.TIMEFRAME_W1, timedelta(days=20160)),
     "MN1":(mt5.TIMEFRAME_MN1, timedelta(days=86400)),
     }
-timeframe = timeframe_dict["M1"]
 
-initial_market_df = pd.DataFrame(mt5.copy_rates_range('EURUSD', mt5.TIMEFRAME_M1, datetime.now() - timedelta(days=3), datetime.now()))
+timeframe = timeframe_dict["M1"][0]
+date_difference = timeframe_dict["M1"][1]
+
+initial_market_df = pd.DataFrame(mt5.copy_rates_range('EURUSD', timeframe, datetime.now() - date_difference, datetime.now()))
 initial_market_df['time'] = pd.to_datetime(initial_market_df['time'], unit = 's')
 print(initial_market_df)
 trading_bot_array = []
@@ -56,7 +58,6 @@ trading_bot_array = []
 
 #Create Bot (include strategies and trader objects. Remember to only create one and just append to a dynamic array) ----------------------------------------------------------------------------------------
 #create bot with buyAndHold strategy using 60.15 from money
-
 
 class TradingStrategy(ABC):
     @abstractmethod
